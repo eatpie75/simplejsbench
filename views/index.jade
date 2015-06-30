@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  form
+    div.form-group
+      label(for='test-name') Test name
+      input.form-control(type='text', name='test-name')
+    div.form-group
+      label(for='test-creator') Email
+      input.form-control(type='email', name='test-creator')
+    div.form-group
+      label(for='test-test') Tests to run
+      textarea.form-control(name='test-test')
+    div.form-group
+      label(for='test.version') Code to test
+      textarea.form-control(name='test-version')
+
+  ol
+    each test in tests
+      li: a(href=test.get_url())= test.name
