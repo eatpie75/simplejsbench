@@ -1,7 +1,10 @@
 extends layout
 
+block post-head
+  script(src="/js/main.js")
+
 block content
-  form
+  form(id='test-form')
     div.form-group
       label(for='test-name') Test name
       input.form-control(type='text', name='test-name')
@@ -11,9 +14,17 @@ block content
     div.form-group
       label(for='test-test') Tests to run
       textarea.form-control(name='test-test')
-    div.form-group
+    hr
+    div.form-group.version-form
+      label(for='test-version-name') Version name
+      input.form-control(type='text', name='test-version-name')
       label(for='test.version') Code to test
       textarea.form-control(name='test-version')
+
+  div
+    button.btn.btn-default(id='button-test-add') Add another field
+    button.btn.btn-primary.pull-right(id='button-test-submit') Save test
+
 
   ol
     each test in tests

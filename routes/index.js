@@ -23,4 +23,18 @@ router.get('/:test', function(req, res) {
   });
 });
 
+router.get('/:test/edit', function(req, res) {
+  req.models.Test.findOne({'slug':req.params.test}, function(err, test) {
+    if (err) {
+      res.status(500);
+      res.render('error', {
+        message: err.message,
+        error: err
+      });
+    } else {
+      res.render('test_edit', {'test':test});
+    }
+  });
+});
+
 module.exports = router;

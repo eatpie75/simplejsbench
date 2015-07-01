@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  span= test.name
+  form(id='test-form')
+    div.form-group
+      label(for='test-name') Test name
+      input.form-control(type='text', name='test-name', value=test.name)
+    div.form-group
+      label(for='test-creator') Email
+      input.form-control(type='email', name='test-creator', disabled, value=test.creator)
+    div.form-group
+      label(for='test-test') Tests to run
+      textarea.form-control(name='test-test')= test.test
+    each version in test.versions
+      div.form-group
+        label(for='test.version') Code to test
+        textarea.form-control(name='test-version')= version
