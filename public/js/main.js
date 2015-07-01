@@ -17,12 +17,34 @@
         'code': e.children('[name="test-version"]').val()
       });
     });
-    return data;
+    return JSON.stringify(data);
   };
 
   submit = function() {
-    return $.post('http://127.0.0.1:3000/api/1/add', serialize(), function(data) {
-      return window.location = data;
+    return $.ajax({
+      'url': 'http://127.0.0.1:3000/api/1/add',
+      'method': 'POST',
+      'data': serialize(),
+      'contentType': 'application/json',
+      'success': function(data) {
+        return window.location = data;
+      }
+    });
+  };
+
+  window.b = function() {
+    var suite, test_fn;
+    suite = new Benchmark.Suite('all');
+    test_fn = $('.test').text();
+    $('.snippet').each(function(i, e) {
+      e = $(e);
+      return suite.add(e.data('name'), e.text() + test_fn);
+    });
+    suite.on('complete', function() {
+      return window.r = this;
+    });
+    return suite.run({
+      'queued': true
     });
   };
 

@@ -13,12 +13,32 @@ window.serialize = ()->
     })
   )
 
-  return data
+  return JSON.stringify(data)
 
 submit = ()->
-  $.post('http://127.0.0.1:3000/api/1/add', serialize(), (data)->
-    window.location = data
+  $.ajax({
+    'url':'http://127.0.0.1:3000/api/1/add'
+    'method':'POST'
+    'data':serialize()
+    'contentType':'application/json'
+    'success': (data)->
+      window.location = data
+  })
+
+window.b = ()->
+  suite = new Benchmark.Suite('all')
+
+  test_fn = $('.test').text()
+
+  $('.snippet').each((i, e)->
+    e=$(e)
+    suite.add(e.data('name'), e.text()+test_fn)
   )
+  suite.on('complete', ()->
+    # debugger
+    window.r = @
+  )
+  suite.run({'queued':true})
 
 $(document).ready(()->
   $('#button-test-add').on('click', (e)->

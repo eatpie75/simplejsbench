@@ -16,6 +16,7 @@ router.get('/', function(req, res, next) {
 router.post('/add', function(req, res) {
   var data = req.body;
   var p = req.models.Test.count({'slug':slug(data.name)});
+
   p.then(function(count) {
     if (count > 0) {
       return rejected(res, 409);
@@ -29,7 +30,8 @@ router.post('/add', function(req, res) {
 
       test.save().then(function() {
         res.status(201).send(test.get_url());
-      }, function() {
+      }, function(err) {
+        console.log(err);
         return rejected(res, 400);
       });
     }
