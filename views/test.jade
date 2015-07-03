@@ -6,10 +6,15 @@ block post-head
 
 block content
   h1= test.name
-    small by #{test.creator}
+    small from MKS19
+  h2.status
   h3 Tests to run on snippets
   pre.test= test.test
   h3 Snippets
   each version in test.versions
-    h4= version.name
-    pre.snippet(data-name=version.name)= version.code
+    h4= version.title
+    div.row
+      div.col-xs-8
+        pre.snippet(data-name="#{version.title}")= version.code
+      div.col-xs-4
+        div.result(id="result-#{version.title}")

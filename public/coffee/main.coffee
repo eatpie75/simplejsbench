@@ -8,7 +8,7 @@ window.serialize = ()->
   $('.version-form').each((i, e)->
     e=$(e)
     data.versions.push({
-      'name':e.children('[name="test-version-name"]').val()
+      'title':e.children('[name="test-version-name"]').val()
       'code':e.children('[name="test-version"]').val()
     })
   )
@@ -26,7 +26,32 @@ submit = ()->
   })
 
 window.b = ()->
-  suite = new Benchmark.Suite('all')
+  window.suite = new Benchmark.Suite('all', {
+    'onCycle':(e)->
+      $('.status').text("#{e.target.name}: #{e.target.cycles}")
+      return
+    'onComplete':(e)->
+      fastest = @filter('fastest')
+      slowest = @filter('slowest')
+
+      suite.forEach((bench)->
+        $el = $('#result-'+bench.name)
+        num_samples = bench.stats.sample.length
+        if bench.name in fastest.pluck('name')
+          $el.addClass('fastest')
+          return
+        else if bench.name in slowest.pluck('name')
+          $el.addClass('slowest')
+        text=[
+          '&times; ' + Benchmark.formatNumber(bench.count),
+          ' (' + num_samples + (if num_samples == 1 then '' else 's') + ')',
+          '<br>' + Math.round((1 - bench.hz / fastest[0].hz) * 100) + '% slower'
+        ].join('')
+        $el.html(text)
+      )
+
+      return
+  })
 
   test_fn = $('.test').text()
 
@@ -34,11 +59,8 @@ window.b = ()->
     e=$(e)
     suite.add(e.data('name'), e.text()+test_fn)
   )
-  suite.on('complete', ()->
-    # debugger
-    window.r = @
-  )
-  suite.run({'queued':true})
+
+  suite.run()
 
 $(document).ready(()->
   $('#button-test-add').on('click', (e)->
