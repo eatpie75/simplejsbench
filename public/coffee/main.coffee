@@ -1,4 +1,4 @@
-window.serialize = ()->
+serialize = ()->
   data = {
     'name':$('[name="test-name"]').val()
     'creator':$('[name="test-creator').val()
@@ -25,31 +25,34 @@ submit = ()->
       window.location = data
   })
 
-window.b = ()->
+run_test = ()->
   window.suite = new Benchmark.Suite('all', {
     'onCycle':(e)->
       $('.status').text("#{e.target.name}: #{e.target.cycles}")
       return
     'onComplete':(e)->
+      $('.status').text('')
       fastest = @filter('fastest')
       slowest = @filter('slowest')
 
       suite.forEach((bench)->
         $el = $('#result-'+bench.name)
         num_samples = bench.stats.sample.length
+        text=[
+          "completed #{Benchmark.formatNumber(bench.count)} times in #{bench.times.elapsed} seconds",
+          "<br>#{num_samples}#{(if num_samples == 1 then '' else 's')} samples",
+          '<br>' + Math.round((1 - bench.hz / fastest[0].hz) * 100) + '% slower'
+        ]
         if bench.name in fastest.pluck('name')
           $el.addClass('fastest')
-          return
+          text[2] = '<br>FASTEST'
         else if bench.name in slowest.pluck('name')
           $el.addClass('slowest')
-        text=[
-          '&times; ' + Benchmark.formatNumber(bench.count),
-          ' (' + num_samples + (if num_samples == 1 then '' else 's') + ')',
-          '<br>' + Math.round((1 - bench.hz / fastest[0].hz) * 100) + '% slower'
-        ].join('')
-        $el.html(text)
+          text.push('<br>SLOWEST')
+        $el.html(text.join(''))
       )
 
+      $('#button-test-run').prop('disabled', false)
       return
   })
 
@@ -58,9 +61,11 @@ window.b = ()->
   $('.snippet').each((i, e)->
     e=$(e)
     suite.add(e.data('name'), e.text()+test_fn)
+    return
   )
 
   suite.run()
+  return
 
 $(document).ready(()->
   $('#button-test-add').on('click', (e)->
@@ -71,9 +76,12 @@ $(document).ready(()->
   $('#button-test-submit').on('click', ()->
     submit()
   )
+  $('#button-test-run').on('click', ()->
+    $(@).prop('disabled', true)
+    run_test()
+  )
   $('#test-form').on('submit', (e)->
     e.preventDefault()
-    console.log('?!')
     submit()
   )
 )

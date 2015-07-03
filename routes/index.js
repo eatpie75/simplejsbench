@@ -18,7 +18,7 @@ router.get('/:test', function(req, res) {
         error: err
       });
     } else {
-      res.render('test', {'test':test});
+      res.render('test', {'title':test.name, 'test':test});
     }
   });
 });

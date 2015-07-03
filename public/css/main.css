@@ -1,4 +1,4 @@
-.snippet {
+.snippet, .test {
   font-size:0.75em;
   height:150px;
   overflow:auto;
@@ -8,7 +8,7 @@
   height:100%;
 }
 .fastest {
-  background-color:green;
+  background-color:lightgreen;
 }
 .slowest {
   background-color:red;
