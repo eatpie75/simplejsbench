@@ -1,4 +1,3 @@
-var Promise = require('promise');
 var slug = require('slug');
 
 var express = require('express');
@@ -9,11 +8,13 @@ var rejected = function(res, status) {
   res.status(status).send();
 };
 
-router.get('/', function(req, res, next) {
-  res.status(400).send();
+router.get('/', function(req, res) {
+  req.models.Test.get_all().then(function(data) {
+    res.send(data);
+  });
 });
 
-router.post('/add', function(req, res) {
+router.post('/', function(req, res) {
   var data = req.body;
   var p = req.models.Test.count({'slug':slug(data.name)});
 

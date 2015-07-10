@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var slug = require('slug');
+var Promise = require('promise');
 
 var TestSchema = new mongoose.Schema({
   'name':{'type':String, 'required':true},
@@ -18,8 +19,14 @@ TestSchema.pre('validate', function(next) {
 });
 
 TestSchema.methods.get_url = function() {
-  console.log(this);
   return '/'+this.slug;
+};
+
+TestSchema.statics.get_all = function() {
+  return new Promise(function(resolve, reject) {
+    Test.find().select('-_id name slug date_created versions test')
+      .then(resolve, reject);
+  });
 };
 
 var Test = mongoose.model('Test', TestSchema);
