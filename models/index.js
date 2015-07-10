@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/simplejsbench', function (error) {
+var uri = process.env.MONGO_URI || 'mongodb://localhost:27017/simplejsbench';
+
+mongoose.connect(uri, function (error) {
   if (error) {
     console.log(error);
   }
