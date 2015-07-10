@@ -23,7 +23,7 @@
 
   submit = function() {
     return $.ajax({
-      'url': 'http://127.0.0.1:3000/api/1/add',
+      'url': 'http://127.0.0.1:3000/api/1/',
       'method': 'POST',
       'data': serialize(),
       'contentType': 'application/json',
