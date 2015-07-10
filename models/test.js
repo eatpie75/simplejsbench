@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var slug = require('slug');
 var Promise = require('promise');
 
+var Test;
+
 var TestSchema = new mongoose.Schema({
   'name':{'type':String, 'required':true},
   'slug':{'type':String, 'required':true},
@@ -19,7 +21,7 @@ TestSchema.pre('validate', function(next) {
 });
 
 TestSchema.methods.get_url = function() {
-  return '/'+this.slug;
+  return '/' + this.slug;
 };
 
 TestSchema.statics.get_all = function() {
@@ -29,6 +31,6 @@ TestSchema.statics.get_all = function() {
   });
 };
 
-var Test = mongoose.model('Test', TestSchema);
+Test = mongoose.model('Test', TestSchema);
 
 module.exports = Test;

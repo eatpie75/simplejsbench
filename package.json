@@ -1,6 +1,7 @@
 {
   "name": "simplejsbench",
   "version": "0.0.0",
+  "main": "app.js",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -19,7 +20,17 @@
   },
   "devDependencies": {
     "chai": "^3.0.0",
+    "coffeelint": "^1.10.1",
+    "grunt": "^0.4.5",
+    "grunt-coffeelint": "0.0.13",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-nodemon": "^0.4.0",
+    "jit-grunt": "^0.9.1",
     "mocha": "^2.2.5",
-    "request": "^2.58.0"
+    "request": "^2.58.0",
+    "time-grunt": "^1.2.1"
   }
 }
